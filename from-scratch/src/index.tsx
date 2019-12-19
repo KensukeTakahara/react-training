@@ -1,14 +1,18 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import rootReducer from "./reducer";
+
+import Dragon from "./three";
+import Controller from "./controller";
 
 const store = createStore(rootReducer);
 
 ReactDOM.render(
   <Provider store={store}>
-    <div>hello, redux</div>
+    <Dragon />
+    <Controller />
   </Provider>,
   document.getElementById("root")
 );
