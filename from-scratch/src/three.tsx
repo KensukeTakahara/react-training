@@ -7,8 +7,9 @@ import "imports-loader?THREE=three!three/examples/js/loaders/ColladaLoader.js";
 
 import { State } from "./model";
 
-const FILE_PATH = "Dragon.dae";
-const COEFFICIENT = 0.003;
+const FILE_NAME = "Dragon.dae";
+const ROTATE_COEFFICIENT = 0.003;
+const CAMERA_Z_POSITION = 100;
 
 interface Props {
   x: number;
@@ -27,7 +28,7 @@ const Thing = ({ x, y, z }: Props) => {
   useEffect(() => {
     // @ts-ignore
     const loader = new THREE.ColladaLoader();
-    loader.load(FILE_PATH, (object: any) => {
+    loader.load(FILE_NAME, (object: any) => {
       setObj(object.scene);
     });
   }, []);
@@ -35,20 +36,20 @@ const Thing = ({ x, y, z }: Props) => {
   const ref = useRef<any>();
   useFrame(() => {
     if (ref.current) {
-      x && (ref.current.rotation.x += x * COEFFICIENT);
-      y && (ref.current.rotation.y += y * COEFFICIENT);
-      z && (ref.current.rotation.z += z * COEFFICIENT);
+      x && (ref.current.rotation.x += x * ROTATE_COEFFICIENT);
+      y && (ref.current.rotation.y += y * ROTATE_COEFFICIENT);
+      z && (ref.current.rotation.z += z * ROTATE_COEFFICIENT);
     }
   });
 
   const { camera } = useThree();
-  camera.position.z = 120;
+  camera.position.z = CAMERA_Z_POSITION;
   return obj ? <primitive ref={ref} object={obj} position={[0, 0, 0]} /> : null;
 };
 
 const WrapperThing: FC<Props> = ({ x, y, z }: Props) => (
   <div style={{ width: "100vw", height: "80vh" }}>
-    <Canvas shadowMap>
+    <Canvas>
       <Thing x={x} y={y} z={z} />
     </Canvas>
   </div>
